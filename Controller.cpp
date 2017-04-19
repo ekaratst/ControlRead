@@ -49,7 +49,7 @@ double fixPointK[][3] = {{0.7,0.1,0.2},
 					{0.3,0.05,0.2},
 					{0.4,0.01,0.01},
 					}; // KP,KI,KD
-geometry_msgs::Pose fixPosition;
+geometry_msgs::Pose fixPosition; //ตัวแปรที่เอาไว้จัดการกับทิศทาง
 nav_msgs::Odometry previousState;
 nav_msgs::Odometry currentState;
 double cmd_vel[6]={0,0,0,0,0,0},position[7],vel[6];
@@ -109,16 +109,16 @@ void init(){
 		vel[i]=0;
 		cmd_vel[i]=0;
 		position[i]=0;
-		pidV[i].resetPID(); // reset pidV
-		pidP[i].resetPID(); // reset pidP
-		pidP[i].setK(fixPointK[i][0],fixPointK[i][1],fixPointK[i][2]); // ตั้งค่า
-		pidV[i].setK(cmdVelK[i][0],cmdVelK[i][1],cmdVelK[i][2]); // ตั้งค่า
+		pidV[i].resetPID(); // set time = now, sumOfError = 0, previousError = 0, diffError = 0 ของ pidV[0->5]
+		pidP[i].resetPID(); // set time = now, sumOfError = 0, previousError = 0, diffError = 0 ของ pidP[0->5]
+		pidP[i].setK(fixPointK[i][0],fixPointK[i][1],fixPointK[i][2]); // เปลี่ยนค่า fixPointK[0->5][0->2] = KP, KI, KD
+		pidV[i].setK(cmdVelK[i][0],cmdVelK[i][1],cmdVelK[i][2]); // เปลี่ยนค่า cmdVelK[0->5][0->2] = KP, KI, KD
 
 	}
-	fixPosition.orientation.x = 0; // กำหนดทิศ
-	fixPosition.orientation.y = 0; // กำหนดทิศ
-	fixPosition.orientation.z = 0; // กำหนดทิศ
-	fixPosition.orientation.w = 1; // กำหนดทิศ
+	fixPosition.orientation.x = 0; // กำหนดทิศ x 
+	fixPosition.orientation.y = 0; // กำหนดทิศ y
+	fixPosition.orientation.z = 0; // กำหนดทิศ z 
+	fixPosition.orientation.w = 1; // กำหนดทิศ w
 	std::cout << "INIT CONTROLLER" << std::endl;
 	PID_constant_helper::load_file("Controller"); // TODO if ros change this node name ?
 }
