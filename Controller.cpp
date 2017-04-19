@@ -109,16 +109,16 @@ void init(){
 		vel[i]=0;
 		cmd_vel[i]=0;
 		position[i]=0;
-		pidV[i].resetPID();
-		pidP[i].resetPID();
-		pidP[i].setK(fixPointK[i][0],fixPointK[i][1],fixPointK[i][2]);
-		pidV[i].setK(cmdVelK[i][0],cmdVelK[i][1],cmdVelK[i][2]);
+		pidV[i].resetPID(); // reset pidV
+		pidP[i].resetPID(); // reset pidP
+		pidP[i].setK(fixPointK[i][0],fixPointK[i][1],fixPointK[i][2]); // ตั้งค่า
+		pidV[i].setK(cmdVelK[i][0],cmdVelK[i][1],cmdVelK[i][2]); // ตั้งค่า
 
 	}
-	fixPosition.orientation.x = 0;
-	fixPosition.orientation.y = 0;
-	fixPosition.orientation.z = 0;
-	fixPosition.orientation.w = 1;
+	fixPosition.orientation.x = 0; // กำหนดทิศ
+	fixPosition.orientation.y = 0; // กำหนดทิศ
+	fixPosition.orientation.z = 0; // กำหนดทิศ
+	fixPosition.orientation.w = 1; // กำหนดทิศ
 	std::cout << "INIT CONTROLLER" << std::endl;
 	PID_constant_helper::load_file("Controller"); // TODO if ros change this node name ?
 }
