@@ -25,16 +25,16 @@
 #include <controller/drive_x.h>
 #include <modbus_ascii_ros/Switch.h>
 
-#define boolToStr(a) a?"true":"false"
-#define abs(a) a<0?-a:a
-#define	MIN_ERROR 5.0e-2
-#define epsilon 1.0e-7
+#define boolToStr(a) a?"true":"false" //ใช้เช็คกับ isFixed ว่าstateเปลี่ยนมั้ย
+#define abs(a) a<0?-a:a  // ฟังก์ชั้นabsปกติ
+#define	MIN_ERROR 5.0e-2 // ตรงตัว
+#define epsilon 1.0e-7 //  ตรงตัว
 #define MAX_OUT 2
 #define MIN_OUT -1
 double err_angle = 0;
-double fix_rel_x_dist = 0;
-double bouyancy = -0.0;
-char axis[6][5] = {"x","y","z","r","p","y"};
+double fix_rel_x_dist = 0; // ?
+double bouyancy = -0.0; // แรงพยุง
+char axis[6][5] = {"x","y","z","r","p","y"}; // แกนต่างๆ
 double cmdVelK[][3] = {{0.7,0.05,0},
 					{0.7,0.05,0},
 					{0.7,0,0},
@@ -50,26 +50,26 @@ double fixPointK[][3] = {{0.7,0.1,0.2},
 					{0.4,0.01,0.01},
 					}; // KP,KI,KD
 geometry_msgs::Pose fixPosition; //ตัวแปรที่เอาไว้จัดการกับทิศทาง
-nav_msgs::Odometry previousState;
-nav_msgs::Odometry currentState;
+nav_msgs::Odometry previousState; // state ก่อนหน้า
+nav_msgs::Odometry currentState; // state ปัจจุบัน
 double cmd_vel[6]={0,0,0,0,0,0},position[7],vel[6];
 double prevPosition[6],prevVel[6];
-volatile bool is_switch_on = false;
-volatile bool isStateArrived = false;
-bool isFixed[] = {false,false,true,true,true,true};
-bool canFixed[] = {true,true,true,true,true,true};
-bool nearZeroBeforeFix[] = {false,false,false,false,false,false};
+volatile bool is_switch_on = false; // มอเตอร์ทำงาน ?
+volatile bool isStateArrived = false; // state ที่มาถึง ?
+bool isFixed[] = {false,false,true,true,true,true}; // เกี่ยว state
+bool canFixed[] = {true,true,true,true,true,true}; // ตรงตัว
+bool nearZeroBeforeFix[] = {false,false,false,false,false,false}; // ตรงตัว
 // double fixedPosition[7] = {0,0,-1,0,0,0,1}; // x y z ? ? ? set for default fix position;
-double errorPosition[6] = {0,0,0,0,0,0};
-double errorVelocity[6] = {0,0,0,0,0,0};
-double out[6];
-SPID *pidV,*pidP;
-std::queue<geometry_msgs::Quaternion> fixPositionQueue;
+double errorPosition[6] = {0,0,0,0,0,0}; // err ของตำแหน่ง
+double errorVelocity[6] = {0,0,0,0,0,0}; // err ของความเร็ว
+double out[6]; // ?
+SPID *pidV,*pidP; // เรียกจาก PID.cpp
+std::queue<geometry_msgs::Quaternion> fixPositionQueue; // ใช่ในการเปลี่ยน state
 
 int normalMode = 1; // fix z roll pitch
 int freeMode = 2; // free roll pitch control
 int barrelRollMode = 3; // for doing barrel roll fix depth yaw
-int controllerMode = normalMode;
+int controllerMode = normalMode; // mode ต่างๆ 
 void validateValue(double&);
 void PIDConstantCallBack(controller::PIDConstantConfig &config,uint32_t level);
 void stateListenerCallBack(const nav_msgs::Odometry msg);
