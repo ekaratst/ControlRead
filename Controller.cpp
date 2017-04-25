@@ -70,21 +70,21 @@ int normalMode = 1; // fix z roll pitch
 int freeMode = 2; // free roll pitch control
 int barrelRollMode = 3; // for doing barrel roll fix depth yaw
 int controllerMode = normalMode; // mode ต่างๆ 
-void validateValue(double&);
-void PIDConstantCallBack(controller::PIDConstantConfig &config,uint32_t level);
-void stateListenerCallBack(const nav_msgs::Odometry msg);
-void cmd_velCallBack(const geometry_msgs::Twist msg);
-void fixDepthCallBack(const std_msgs::Float64 msg);
-void fixYawCallBack(const std_msgs::Float64 msg);
-void changeFixedState();
-void setPreviousState();
-bool equal(double a, double b);
-bool isClose(double a, double b);
-bool outOfBound(double);
-void calculateError();
-void setK();
-double angleError(double a,double b);
-geometry_msgs::Twist calculatePID();
+void validateValue(double&); // เช็ตว่าค่า เท่ากัน หรือมากกว่าMAX_OUT หรือ น้อยกว่าMIN_OUT
+void PIDConstantCallBack(controller::PIDConstantConfig &config,uint32_t level); // ?
+void stateListenerCallBack(const nav_msgs::Odometry msg); // subcribe sub_state
+void cmd_velCallBack(const geometry_msgs::Twist msg); // subcribe sub_cmd_vel
+void fixDepthCallBack(const std_msgs::Float64 msg); // ตรงตัว
+void fixYawCallBack(const std_msgs::Float64 msg); // ตรงตัว
+void changeFixedState(); // ดึงstateออกมาทำ
+void setPreviousState(); // กำหนดค่า state
+bool equal(double a, double b); // ฟังก์ชันเช็ตเท่ากับ
+bool isClose(double a, double b); // ?
+bool outOfBound(double); // ฟังก์ชันเช็คขอบ
+void calculateError(); // คำนวณ err
+void setK(); // กำหนดค่า k
+double angleError(double a,double b); // มุมerr
+geometry_msgs::Twist calculatePID(); // คำนวณ pid
 std_msgs::Bool is_at_fix_position(double err);
 std_msgs::Bool is_at_fix_orientation(double err);
 void cmd_fix_positionCallBack(const geometry_msgs::Point msg);
